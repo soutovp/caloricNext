@@ -25,6 +25,12 @@ export const Container = style([
 	}
 ])
 
+export const H1 = style({
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'center'
+})
+
 export const Label = style({
 	display: 'block',
 	color: vars.colors.labelColor,
@@ -43,7 +49,7 @@ export const input = style([
 	{
 		color: vars.colors.inputTextColor,
 		backgroundColor: vars.colors.inputBackground,
-		margin: `${vars.space.medium} 0`,
+		margin: `${vars.space.medium} 0 0 0`,
 		border: 'none',
 		boxShadow: '2px 2px 2px rgba(0,0,0,.05)',
 		borderRadius: '5px',
@@ -57,4 +63,39 @@ export const input = style([
 			outline: `2px solid ${vars.colors.inputTextColor}`
 		},
 	},
+])
+
+export const atividadeStyles = style([
+	sprinkles({
+		padding:{
+			mobile:'large',
+			tablet: 'large',
+			desktop: 'large'
+		}
+	}),
+	{
+		color: vars.colors.inputTextColor
+	}
+])
+
+export const inputButton = style([
+	sprinkles({
+		padding:{
+			mobile:'large',
+			tablet: 'large',
+			desktop: 'large'
+		}
+	}),
+	{
+		display: 'block',
+		backgroundColor: vars.colors.inputButton,
+		color: vars.colors.inputButtonText,
+		width: '100%',
+		border: 'none',
+		boxShadow: '2px 2px 2px rgba(0,0,0,.05)',
+		borderRadius: '5px',
+		':active':{
+			backgroundColor: vars.colors.inputButtonActive
+		}
+	}
 ])

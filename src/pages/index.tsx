@@ -1,17 +1,19 @@
-import { Container, Form, input, Label } from '@/styles/Home.css'
+import { atividadeStyles, Container, Form, H1, input, inputButton, Label } from '@/styles/Home.css'
 import Head from 'next/head'
 import { useState } from 'react'
 
 export default function Home() {
-	const [uuser, setUuser] = useState({objetivo:'perda', atividade:'sedentario'})
-	const [atividadeDesc, setAtividadeDesc] = useState('')
-	type atividades = 'sedentario' | 'leve'
+	const valoresAceitos = {
+		1.2: 'Pouco ou nenhum exercício.',
+		1.375: 'Exercício leve 1 a 3 dias por semana.',
+		1.55: 'Faz esportes 3 a 5 dias por semana.',
+		1.725: 'Exercício Pesado de 5 a 6 dias por semana.',
+		1.9: 'Exercício Pesado diariamente e até 2 vezes por dia.'
+	}
+	const [uuser, setUuser] = useState({objetivo:'perda', atividade:'1.2'})
+	const [atividadeDesc, setAtividadeDesc] = useState(valoresAceitos['1.2'])
+	type atividades = '1.2' | '1.375'
 	function atividadesDescs(valor:atividades){
-		const valoresAceitos = {
-			sedentario:'Pouco ou nenhum exercício.',
-			leve:'Exercício leve 1 a 3 dias por semana.'
-		}
-		console.log(valoresAceitos[valor])
 		return valoresAceitos[valor]
 	}
 
@@ -22,6 +24,9 @@ export default function Home() {
 			...prevValue,
 			[nome]: valor,
 		}))
+		if(nome === 'atividade'){
+			setAtividadeDesc(atividadesDescs(valor))
+		}
 	}
 	console.log(uuser)
 	return (
@@ -32,7 +37,10 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<h1>Hello World</h1>
+			<h1 className={H1}>
+				<b>Calculadora</b>
+				<b>Calorica</b>
+			</h1>
 			<form className={Form} action="#">
 				<div className={Container}>
 					<label className={Label} htmlFor="peso">Peso</label>
@@ -55,15 +63,32 @@ export default function Home() {
 				<div className={Container}>
 					<label className={Label} htmlFor="atividade">Atividade</label>
 					<select className={input} onChange={handleChange} name="atividade">
-						<option value="perda">Sedentario</option>
-						<option value="ganho">Leve</option>
-						<option value="manter">Moderada</option>
-						<option value="manter">Alta</option>
-						<option value="manter">Extremo</option>
+						<option value={1.2}>Sedentario</option>
+						<option value={1.375}>Leve</option>
+						<option value={1.55}>Moderada</option>
+						<option value={1.725}>Alta</option>
+						<option value={1.9}>Extremo</option>
 					</select>
+					<p className={atividadeStyles}>{atividadeDesc}</p>
 				</div>
-				<h2>Atividade</h2>
-				<p></p>
+				<div className={Container}>
+					<label className={Label} htmlFor="idade">Idade</label>
+					<input name='idade' type="number" className={input} onChange={handleChange} />
+				</div>
+				<div className={Container}>
+					<label htmlFor="sexo" className={Label}>Sexo</label>
+					<div style={{padding: 5}}>
+						<input type="radio" name="sexo" id="masculino" value={'masculino'} onChange={handleChange} />
+						<label htmlFor="masculino">Masculino</label>
+					</div>
+					<div style={{padding: 5}}>
+						<input type="radio" name="sexo" id="feminino" value={'feminino'} onChange={handleChange} />
+						<label htmlFor="feminino">Feminino</label>
+					</div>
+				</div>
+				<div className={Container}>
+					<input type="button" value="Calcular" className={inputButton} />
+				</div>
 			</form>
 
 		</>

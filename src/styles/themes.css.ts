@@ -5,6 +5,9 @@ export const vars = createThemeContract({
 		appBackground: '',
 		inputBackground: '',
 		inputTextColor: '',
+		inputButton: '',
+		inputButtonText: '',
+		inputButtonActive: '',
 		labelColor: ''
 	},
 	space:{
@@ -22,6 +25,9 @@ export const theme = createGlobalTheme(':root', vars,{
 		appBackground: '#F4F6FB',
 		inputBackground: '#FFFFFF',
 		inputTextColor: '#9627A8',
+		inputButton: '#39A827',
+		inputButtonText: '#FFFFFF',
+		inputButtonActive: '#2F8521',
 		labelColor: '#000000'
 	},
 	space:{
@@ -39,7 +45,11 @@ export const lightTheme = createTheme(vars,{
 		appBackground: '#F4F6FB',
 		inputBackground: '#FFFFFF',
 		inputTextColor: '#9627A8',
-		labelColor: '#000000'
+		inputButton: '#39A827',
+		inputButtonText: '#FFFFFF',
+		inputButtonActive: '#2F8521',
+		labelColor: '#000000',
+
 	},
 	space:{
 		none: 'none',
@@ -56,6 +66,9 @@ export const darkTheme = createTheme(vars,{
 		appBackground: '#1D191E',
 		inputBackground: '#2E2C2C',
 		inputTextColor: '#9E60A8',
+		inputButton: '#39A827',
+		inputButtonText: '#FFFFFF',
+		inputButtonActive: '#2F8521',
 		labelColor: '#FFFFFF'
 	},
 	space:{
