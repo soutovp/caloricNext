@@ -1,20 +1,19 @@
 import { atividadeStyles, Container, Form, H1, input, inputButton, Label, radioStyles } from '@/styles/Home.css'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
-
+import { UserActivityAcceptedValues } from '@entities/User/UserActivityAcceptedValues'
+import { TypeUserActivityAcceptedValues } from '@/entities/User/TypeUserActivityAcceptedValues'
+import { User } from '@/entities/User/User'
+import { calcMetabolismoBasal } from '@/components/calcMetabolismoBasal'
+export let data = {
+	basal:0,
+}
 export default function Home() {
-	const valoresAceitos = {
-		1.2: 'Pouco ou nenhum exercício.',
-		1.375: 'Exercício leve 1 a 3 dias por semana.',
-		1.55: 'Faz esportes 3 a 5 dias por semana.',
-		1.725: 'Exercício Pesado de 5 a 6 dias por semana.',
-		1.9: 'Exercício Pesado diariamente e até 2 vezes por dia.'
-	}
-	const [uuser, setUuser] = useState({objetivo:'perda', atividade:'1.2'})
-	const [atividadeDesc, setAtividadeDesc] = useState(valoresAceitos['1.2'])
-	type atividades = '1.2' | '1.375'
-	function atividadesDescs(valor:atividades){
-		return valoresAceitos[valor]
+	const [atividadeDesc, setAtividadeDesc] = useState(UserActivityAcceptedValues['1.2'])
+	const [uuser, setUuser] = useState(User)
+	function atividadesDescs(valor:TypeUserActivityAcceptedValues){
+		return UserActivityAcceptedValues[valor]
 	}
 
 	const handleChange = (value: { target: { name: string; value: any } })=>{
@@ -22,11 +21,14 @@ export default function Home() {
 		let valor = value.target.value
 		setUuser((prevValue) => ({
 			...prevValue,
-			[nome]: valor,
+			[nome]: valor
 		}))
-		if(nome === 'atividade'){
+		if(nome === 'activity'){
 			setAtividadeDesc(atividadesDescs(valor))
 		}
+	}
+	const handleClick = ()=>{
+		data.basal = calcMetabolismoBasal(uuser)
 	}
 	console.log(uuser)
 	return (
@@ -43,26 +45,24 @@ export default function Home() {
 			</h1>
 			<form className={Form} action="#">
 				<div className={Container}>
-					<label className={Label} htmlFor="peso">Peso</label>
-					<input style={{
-
-					}} name='peso' type="number" className={input} onChange={handleChange} />
+					<label className={Label} htmlFor="weight">Peso</label>
+					<input name='weight' type="number" className={input} onChange={handleChange} />
 				</div>
 				<div className={Container}>
-					<label className={Label} htmlFor="altura">Altura</label>
-					<input name='altura' type="number" className={input} onChange={handleChange} />
+					<label className={Label} htmlFor="height">Altura</label>
+					<input name='height' type="number" className={input} onChange={handleChange} />
 				</div>
 				<div className={Container}>
-					<label className={Label} htmlFor="objetivo">Objetivo</label>
-					<select className={input} onChange={handleChange} name="objetivo" id="objetivo">
+					<label className={Label} htmlFor="objective">Objetivo</label>
+					<select className={input} onChange={handleChange} name="objective" id="objective">
 						<option value="perda">Perda de Peso</option>
 						<option value="ganho">Ganho de Peso</option>
 						<option value="manter">Manter o Peso</option>
 					</select>
 				</div>
 				<div className={Container}>
-					<label className={Label} htmlFor="atividade">Atividade</label>
-					<select className={input} onChange={handleChange} name="atividade">
+					<label className={Label} htmlFor="activity">Atividade</label>
+					<select className={input} onChange={handleChange} name="activity">
 						<option value={1.2}>Sedentario</option>
 						<option value={1.375}>Leve</option>
 						<option value={1.55}>Moderada</option>
@@ -72,22 +72,24 @@ export default function Home() {
 					<p className={atividadeStyles}>{atividadeDesc}</p>
 				</div>
 				<div className={Container}>
-					<label className={Label} htmlFor="idade">Idade</label>
-					<input name='idade' type="number" className={input} onChange={handleChange} />
+					<label className={Label} htmlFor="age">Idade</label>
+					<input name='age' type="number" className={input} onChange={handleChange} />
 				</div>
 				<div className={Container}>
-					<label htmlFor="sexo" className={Label}>Sexo</label>
+					<label htmlFor="gender" className={Label}>Sexo</label>
 					<div style={{padding: 5}}>
-						<input className={radioStyles} type="radio" name="sexo" id="masculino" value={'masculino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="gender" id="masculino" value={'masculino'} onChange={handleChange} />
 						<label htmlFor="masculino">Masculino</label>
 					</div>
 					<div style={{padding: 5}}>
-						<input className={radioStyles} type="radio" name="sexo" id="feminino" value={'feminino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="gender" id="feminino" value={'feminino'} onChange={handleChange} />
 						<label htmlFor="feminino">Feminino</label>
 					</div>
 				</div>
 				<div className={Container}>
-					<input type="button" value="Calcular" className={inputButton} />
+					<Link href='/resultado'>
+						<input type="button" value="Calcular" className={inputButton} onClick={handleClick} />
+					</Link>
 				</div>
 			</form>
 
