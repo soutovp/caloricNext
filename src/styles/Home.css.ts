@@ -65,6 +65,10 @@ export const input = style([
 	},
 ])
 
+export const radioStyles = style({
+	accentColor: vars.colors.inputTextColor
+})
+
 export const atividadeStyles = style([
 	sprinkles({
 		padding:{
@@ -90,12 +94,19 @@ export const inputButton = style([
 		display: 'block',
 		backgroundColor: vars.colors.inputButton,
 		color: vars.colors.inputButtonText,
+		fontSize: '16px',
+		fontWeight: '600',
 		width: '100%',
 		border: 'none',
 		boxShadow: '2px 2px 2px rgba(0,0,0,.05)',
 		borderRadius: '5px',
+		marginTop: '25px',
 		':active':{
-			backgroundColor: vars.colors.inputButtonActive
+			backgroundColor: vars.colors.inputButtonActive,
+			outline: `2px solid ${vars.colors.inputTextColor}`
+		},
+		'::selection':{
+			border: `2px solid ${vars.colors.inputTextColor}`
 		}
 	}
 ])

@@ -1,4 +1,4 @@
-import { atividadeStyles, Container, Form, H1, input, inputButton, Label } from '@/styles/Home.css'
+import { atividadeStyles, Container, Form, H1, input, inputButton, Label, radioStyles } from '@/styles/Home.css'
 import Head from 'next/head'
 import { useState } from 'react'
 
@@ -78,11 +78,11 @@ export default function Home() {
 				<div className={Container}>
 					<label htmlFor="sexo" className={Label}>Sexo</label>
 					<div style={{padding: 5}}>
-						<input type="radio" name="sexo" id="masculino" value={'masculino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="sexo" id="masculino" value={'masculino'} onChange={handleChange} />
 						<label htmlFor="masculino">Masculino</label>
 					</div>
 					<div style={{padding: 5}}>
-						<input type="radio" name="sexo" id="feminino" value={'feminino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="sexo" id="feminino" value={'feminino'} onChange={handleChange} />
 						<label htmlFor="feminino">Feminino</label>
 					</div>
 				</div>
