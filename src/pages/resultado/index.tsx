@@ -1,8 +1,13 @@
-import { H1 } from '@styles/Home.css'
+import { calcMetabolismoBasal } from '@/components/calcMetabolismoBasal'
+import { Form } from '@styles/Home.css'
+import { Label } from '@styles/Home.css'
+import { input } from '@styles/Home.css'
+import { Container, H1 } from '@styles/Home.css'
 import Head from 'next/head'
 import Link from 'next/link'
-import { data } from '..'
 export default function Resultado(){
+
+	const userData = JSON.parse(localStorage.getItem('user') || '{}')
 	return(
 		<>
 			<Head>
@@ -16,7 +21,12 @@ export default function Resultado(){
 				<b>Calculadora</b>
 				<b>Calorica</b>
 			</h1>
-			<h2>Gasto Calórico : {data.basal}</h2>
+			<div className={Form}>
+				<div className={Container}>
+					<label className={Label} htmlFor="gastoCalorico">Gasto calórico Normal</label>
+					<input type="text" className={input} value={calcMetabolismoBasal(userData).toFixed(2)} disabled/>
+				</div>
+			</div>
 		</>
 	)
 }

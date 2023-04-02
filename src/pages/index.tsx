@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { UserActivityAcceptedValues } from '@entities/User/UserActivityAcceptedValues'
 import { TypeUserActivityAcceptedValues } from '@/entities/User/TypeUserActivityAcceptedValues'
 import { User } from '@/entities/User/User'
-import { calcMetabolismoBasal } from '@/components/calcMetabolismoBasal'
 export let data = {
 	basal:0,
 }
@@ -28,7 +27,7 @@ export default function Home() {
 		}
 	}
 	const handleClick = ()=>{
-		data.basal = calcMetabolismoBasal(uuser)
+		localStorage.setItem('user', JSON.stringify(uuser))
 	}
 	console.log(uuser)
 	return (
@@ -87,7 +86,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div className={Container}>
-					<Link href='/resultado'>
+					<Link style={{textDecoration: 'none'}} href='/resultado'>
 						<input type="button" value="Calcular" className={inputButton} onClick={handleClick} />
 					</Link>
 				</div>
