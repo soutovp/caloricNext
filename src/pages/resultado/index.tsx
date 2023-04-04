@@ -8,7 +8,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 export default function Resultado(){
 
-	const userData = JSON.parse(localStorage.getItem('user') || '{}')
+	// const userData = JSON.parse(localStorage.getItem('user') || '{}')
 
 	return(
 		<>
@@ -26,7 +26,7 @@ export default function Resultado(){
 			<div className={Form}>
 				<div className={Container}>
 					<label className={Label} htmlFor="gastoCalorico">Gasto calórico Normal</label>
-					<input type="text" className={input} value={calcMetabolismoBasal(userData).toFixed(2)} disabled/>
+					<input type="text" className={input} disabled/>
 				</div>
 			</div>
 		</>
