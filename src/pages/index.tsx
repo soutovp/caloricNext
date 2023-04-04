@@ -8,48 +8,40 @@ import { User } from '@/entities/User/User'
 import { InputRange } from '@/components/InputRange/InputRange'
 import { darkTheme, lightTheme } from '@/styles/themes.css'
 export default function Home() {
-	const [mode, setMode] = useState<Boolean>()
+	const [mode, setMode] = useState<boolean>()
 	const [user] = useState(new User())
 	const [valueLeft, setValueLeft] = useState(100)
 	const [atividadeDesc, atividadeDescChange] = useState('Pouco ou nenhum exercício')
-	const handleModeChange = ()=>{
-		console.log('handleModeChange chamado...')
-		if(mode === true){
-			setMode(false)
-			window.localStorage.setItem('darkMode', String(mode))
-			verifyMode()
-		}else{
-			setMode(true)
-			window.localStorage.setItem('darkMode', String(mode))
-			verifyMode()
-		}
-	}
-	const verifyMode = ()=>{
-		console.log('verifyMode chamado...')
-		if(mode === true){
-			document.body.classList.remove(lightTheme)
-			document.body.classList.add(darkTheme)
-			window.localStorage.setItem('darkMode', String(mode))
-			return
-		}else{
-			document.body.classList.remove(darkTheme)
-			document.body.classList.add(lightTheme)
-			window.localStorage.setItem('darkMode', String(mode))
-			return
-		}
-	}
 	let firstRender = false
 	useEffect(()=>{
 		if(!firstRender){
-			if(window.localStorage.getItem('darkMode') === 'undefined' || undefined){
-				setMode(false)
-				window.localStorage.setItem('darkMode', String(mode))
-			}else{
-				window.localStorage.getItem('darkMode') === 'false' ? setMode(false) : setMode(true)
+			const val = mode
+			if(val === true){
+				document.body.classList.remove(lightTheme)
+				document.body.classList.add(darkTheme)
+				localStorage.setItem('darkMode', val.toString())
+				console.log(`Window localStorage : ${window.localStorage.getItem('darkMode')}`)
+				setMode(val)
+			}else if(val === false){
+				document.body.classList.remove(darkTheme)
+				document.body.classList.add(lightTheme)
+				localStorage.setItem('darkMode', val.toString())
+				console.log(`Window localStorage : ${window.localStorage.getItem('darkMode')}`)
+				setMode(val)
+			}
+		}
+	},[mode])
+	useEffect(()=>{
+		if(!firstRender){
+			if (typeof localStorage !== 'undefined' && typeof localStorage.getItem('darkMode') === 'string') {
+				if (localStorage.getItem('darkMode') === 'true') {
+					setMode(true)
+				} else {
+					setMode(false)
+				}
 				console.log(mode)
 			}
 		}
-		console.log('useEffect chamado...')
 		atividadeDescChange(UserActivityAcceptedValues[user.activity as TypeUserActivityAcceptedValues])
 		if (firstElementRef.current) {
 			firstElementRef.current.focus()
@@ -105,7 +97,7 @@ export default function Home() {
 				<b>Calculadora</b>
 				<b>Calorica</b>
 			</h1>
-			<input type="button" onClick={()=>handleModeChange} value="DarkMode"/>
+			<input type="button" onClick={()=>setMode(!mode)} value="DarkMode"/>
 			<form className={Form} action="#" >
 				<div className={Container}>
 					<label className={Label} htmlFor="weight">Peso</label>
