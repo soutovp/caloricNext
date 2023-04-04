@@ -14,7 +14,7 @@ export const ContainerInput = style([
 		margin: `${vars.space.large} 0`,
 		color:vars.colors.labelColor,
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
 	}
 ])
 

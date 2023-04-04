@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useRef } from 'react'
 import { IInputRangeProps } from './IInputRangeProps'
 import { ContainerInput, SInputRange } from './SInputRange.css'
+import { vars } from '@/styles/themes.css'
 interface IInputRangeState{
 	count: number
 }
@@ -22,7 +23,7 @@ export class InputRange extends React.Component<IInputRangeProps, IInputRangeSta
 			<div className={ContainerInput}>
 				{/* ts-ignore */}
 				<label htmlFor={name}>{`${label} ${count}%`}</label>
-				<div style={{backgroundColor:'white', borderRadius:'25px'}}>
+				<div style={{backgroundColor:vars.colors.inputBackground, borderRadius:'25px'}}>
 					<input style={{width:`calc(${this.props.max}% - 2%)`}} onChange={e=>this.handleChange(e)} className={SInputRange} defaultValue={0} max={this.props.max} min={0} type="range" id={name} name={name} />
 				</div>
 			</div>
