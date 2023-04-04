@@ -2,9 +2,9 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
 	return (
-		<Html lang="en">
+		<Html lang="en" tabIndex={-1}>
 			<Head />
-			<body>
+			<body tabIndex={-1}>
 				<Main />
 				<NextScript />
 			</body>

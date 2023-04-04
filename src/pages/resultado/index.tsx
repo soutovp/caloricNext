@@ -1,4 +1,5 @@
 import { calcMetabolismoBasal } from '@/components/calcMetabolismoBasal'
+import { User } from '@/entities/User/User'
 import { Form } from '@styles/Home.css'
 import { Label } from '@styles/Home.css'
 import { input } from '@styles/Home.css'
@@ -8,6 +9,7 @@ import Link from 'next/link'
 export default function Resultado(){
 
 	const userData = JSON.parse(localStorage.getItem('user') || '{}')
+
 	return(
 		<>
 			<Head>

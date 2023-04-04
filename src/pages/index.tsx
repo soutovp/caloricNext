@@ -1,35 +1,57 @@
 import { atividadeStyles, Container, Form, H1, input, inputButton, Label, radioStyles } from '@/styles/Home.css'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState, useRef, InputHTMLAttributes, ReactElement, ReactPropTypes } from 'react'
 import { UserActivityAcceptedValues } from '@entities/User/UserActivityAcceptedValues'
 import { TypeUserActivityAcceptedValues } from '@/entities/User/TypeUserActivityAcceptedValues'
 import { User } from '@/entities/User/User'
-export let data = {
-	basal:0,
-}
+import { InputRange } from '@/components/InputRange/InputRange'
 export default function Home() {
-	const [atividadeDesc, setAtividadeDesc] = useState(UserActivityAcceptedValues['1.2'])
-	const [uuser, setUuser] = useState(User)
-	function atividadesDescs(valor:TypeUserActivityAcceptedValues){
-		return UserActivityAcceptedValues[valor]
-	}
 
-	const handleChange = (value: { target: { name: string; value: any } })=>{
-		let nome = value.target.name
-		let valor = value.target.value
-		setUuser((prevValue) => ({
-			...prevValue,
-			[nome]: valor
-		}))
-		if(nome === 'activity'){
-			setAtividadeDesc(atividadesDescs(valor))
+	const [user] = useState(new User())
+	const [valueLeft, setValueLeft] = useState(100)
+	const [atividadeDesc, atividadeDescChange] = useState('Pouco ou nenhum exercício')
+
+	useEffect(()=>{
+		atividadeDescChange(UserActivityAcceptedValues[user.activity as TypeUserActivityAcceptedValues])
+		if (firstElementRef.current) {
+			firstElementRef.current.focus()
 		}
+	},[user.activity])
+
+	const handleChange = (value:{target:{name: string, value:any}})=>{
+		const _name= value.target.name
+		const _value = value.target.value
+		if(_name === 'activity'){
+			user.setActivity(_value)
+			atividadeDescChange(UserActivityAcceptedValues[user.activity as TypeUserActivityAcceptedValues])
+			return
+		}
+		//@ts-ignore
+		user[_name as keyof User] = _value
+		console.log(user)
 	}
 	const handleClick = ()=>{
-		localStorage.setItem('user', JSON.stringify(uuser))
+		localStorage.setItem('user', JSON.stringify(user))
 	}
-	console.log(uuser)
+	const firstElementRef = useRef<HTMLInputElement>(null)
+	const lastElementRef = useRef<HTMLInputElement>(null)
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Tab' && e.shiftKey) {
+		  // shift + tab
+		  if (document.activeElement === firstElementRef.current) {
+		    e.preventDefault()
+		    lastElementRef.current?.focus()
+		  }
+		} else if (e.key === 'Tab') {
+		  // tab
+		  if (document.activeElement === lastElementRef.current) {
+		    e.preventDefault()
+		    firstElementRef.current?.focus()
+		  }
+		}
+	   }
 	return (
 		<>
 			<Head>
@@ -38,22 +60,22 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<h1 className={H1}>
+			<h1 className={H1} tabIndex={-1}>
 				<b>Calculadora</b>
 				<b>Calorica</b>
 			</h1>
-			<form className={Form} action="#">
+			<form className={Form} action="#" >
 				<div className={Container}>
 					<label className={Label} htmlFor="weight">Peso</label>
-					<input name='weight' type="number" className={input} onChange={handleChange} />
+					<input ref={firstElementRef} onKeyDown={handleKeyDown} id='weight' name='weight' type="number" className={input} onChange={handleChange} tabIndex={1} autoFocus={true} />
 				</div>
 				<div className={Container}>
 					<label className={Label} htmlFor="height">Altura</label>
-					<input name='height' type="number" className={input} onChange={handleChange} />
+					<input onKeyDown={handleKeyDown} name='height' type="number" className={input} onChange={handleChange} tabIndex={2}/>
 				</div>
 				<div className={Container}>
 					<label className={Label} htmlFor="objective">Objetivo</label>
-					<select className={input} onChange={handleChange} name="objective" id="objective">
+					<select className={input} name="objective" id="objective" onChange={handleChange} tabIndex={3}>
 						<option value="perda">Perda de Peso</option>
 						<option value="ganho">Ganho de Peso</option>
 						<option value="manter">Manter o Peso</option>
@@ -61,7 +83,7 @@ export default function Home() {
 				</div>
 				<div className={Container}>
 					<label className={Label} htmlFor="activity">Atividade</label>
-					<select className={input} onChange={handleChange} name="activity">
+					<select className={input} name="activity" onChange={handleChange} tabIndex={4}>
 						<option value={1.2}>Sedentario</option>
 						<option value={1.375}>Leve</option>
 						<option value={1.55}>Moderada</option>
@@ -72,24 +94,28 @@ export default function Home() {
 				</div>
 				<div className={Container}>
 					<label className={Label} htmlFor="age">Idade</label>
-					<input name='age' type="number" className={input} onChange={handleChange} />
+					<input placeholder='Digite a sua idade' name='age' type="number" className={input} onChange={handleChange} tabIndex={5}/>
 				</div>
 				<div className={Container}>
 					<label htmlFor="gender" className={Label}>Sexo</label>
 					<div style={{padding: 5}}>
-						<input className={radioStyles} type="radio" name="gender" id="masculino" value={'masculino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="gender" id="masculino" value={'masculino'} onChange={handleChange} tabIndex={6}/>
 						<label htmlFor="masculino">Masculino</label>
 					</div>
 					<div style={{padding: 5}}>
-						<input className={radioStyles} type="radio" name="gender" id="feminino" value={'feminino'} onChange={handleChange} />
+						<input className={radioStyles} type="radio" name="gender" id="feminino" value={'feminino'} onChange={handleChange} tabIndex={7}/>
 						<label htmlFor="feminino">Feminino</label>
 					</div>
 				</div>
+				<InputRange max={100} name='protein' label='Protein'/>
+				<InputRange max={50} name='carboidrato' label='Carboidrato'/>
+				<InputRange max={30} name='gordura' label='Gordura'/>
 				<div className={Container}>
-					<Link style={{textDecoration: 'none'}} href='/resultado'>
-						<input type="button" value="Calcular" className={inputButton} onClick={handleClick} />
+					<Link style={{textDecoration: 'none'}} href='/resultado' tabIndex={-1}>
+						<input ref={lastElementRef} onKeyDown={handleKeyDown} id='buttonForm' type="button" value="Calcular" className={inputButton} onClick={handleClick} tabIndex={8} />
 					</Link>
 				</div>
+
 			</form>
 
 		</>
