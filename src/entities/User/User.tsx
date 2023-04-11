@@ -5,6 +5,9 @@ export class User implements IUserData {
 	height!: number
 	objective: string = 'perda'
 	activity: string = '1.2'
+	campoProtein: number = 0
+	carboidrato: number = 0
+	gordura: number = 0
 	setActivity(activity:string){this.activity = activity}
 	age!: number
 	gender!: string
