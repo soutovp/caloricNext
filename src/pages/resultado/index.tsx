@@ -55,14 +55,14 @@ export default function Resultado(){
 				<hr style={{width:'100%', color:'rgba(255,255,255,.1'}} />
 				<h1 style={{color:vars.colors.inputButton}}>Resultado</h1>
 
-				<div>{imc(userData.weight || 0, userData.height || 0)}</div>
+				<div className={Container}>{imc(userData.weight || 0, userData.height || 0)}</div>
 				<br />
 				<div className={Container}>
 					<label htmlFor="gastoCalorico">Seu gasto calórico é :</label>
 					<input className={InputTextGreen} value={metabolismoBasal(userData.activity, userData.weight, userData.height, userData.gender, userData.age).toFixed(0)+' Cal'} type="text" disabled/>
 				</div>
 
-				<h2>Para bater sua meta de : <span>{meta[userData.objective]}</span></h2>
+				<h2 className={Container}>Para bater sua meta de : <span>{meta[userData.objective]}</span></h2>
 				<div className={Container}>
 					<input
 						className={InputTextGreen}
