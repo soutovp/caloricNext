@@ -47,7 +47,7 @@ export const lightTheme = createTheme(vars,{
 		inputTextColor: '#9627A8',
 		inputButton: '#39A827',
 		inputButtonText: '#FFFFFF',
-		inputButtonActive: '#2F8521',
+		inputButtonActive: '#39a827',
 		labelColor: '#000000',
 
 	},
@@ -66,9 +66,9 @@ export const darkTheme = createTheme(vars,{
 		appBackground: '#1D191E',
 		inputBackground: '#2E2C2C',
 		inputTextColor: '#9E60A8',
-		inputButton: '#39A827',
+		inputButton: '#199007',
 		inputButtonText: '#FFFFFF',
-		inputButtonActive: '#2F8521',
+		inputButtonActive: '#199007',
 		labelColor: '#FFFFFF'
 	},
 	space:{

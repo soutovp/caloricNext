@@ -19,12 +19,13 @@ export const inputButton = style([
 		border: 'none',
 		boxShadow: '2px 2px 2px rgba(0,0,0,.05)',
 		borderRadius: '5px',
-		marginTop: '25px',
-		':active':{
+		margin: '25px 0',
+		':focus':{
 			backgroundColor: vars.colors.inputButtonActive,
 			outline: `2px solid ${vars.colors.inputTextColor}`
 		},
 		'::selection':{
+			outline: `2px solid ${vars.colors.inputTextColor}`,
 			border: `2px solid ${vars.colors.inputTextColor}`
 		}
 	}

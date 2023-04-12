@@ -1,11 +1,42 @@
 import { Logo } from '@/components/Logo'
-import { vars } from '@/styles/themes.css'
 import Head from 'next/head'
-import Link from 'next/link'
+import { ButtonArrow, InputTextGreen } from '@/styles/Resultado/index.css'
+import { Container, Form, inputButton } from '@/styles/HomePage/index.css'
+import { vars } from '@/styles/themes.css'
+import { imc } from '@/services/imc'
+import { metabolismoBasal } from '@/services/metabolismoBasal'
+import { macrosDivider } from '@/services/macrosDivider'
+import { useRouter } from 'next/router'
+type multiplicadorType = {
+	[key: string]: number
+	perda:number,
+	ganho:number,
+	manter:number
+}
+const multiplicador:multiplicadorType = {
+	perda: 0.8,
+	ganho: 1.2,
+	manter: 1
+}
+const meta:{
+	[key:string]:string
+	perda:string,
+	ganho:string,
+	manter:string
+}={
+	perda:'Perda de Peso',
+	ganho:'Ganho de Peso',
+	manter:'Manter o Peso'
+}
 export default function Resultado(){
-
-	// const userData = JSON.parse(localStorage.getItem('user') || '{}')
-
+	const router = useRouter()
+	const userData = JSON.parse(typeof localStorage !== 'undefined' && localStorage.getItem('user') || '{}')
+	const calorias = metabolismoBasal(userData.activity, userData.weight, userData.height, userData.gender, userData.age)
+	//@ts-ignore
+	const $caloriasObjective = calorias * multiplicador[userData.objective]
+	const caloriasObjective = parseInt($caloriasObjective.toFixed(0))
+	const macros = macrosDivider(caloriasObjective)
+	console.log(userData)
 	return(
 		<>
 			<Head>
@@ -14,12 +45,49 @@ export default function Resultado(){
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Link href={'/'}>
-				<button style={{margin:'10px',position:'fixed', padding:'25px', background:'none', border:'none', color:vars.colors.labelColor, fontSize:'25px'}}>{'<'}</button>
-			</Link>
+			<button onClick={router.back} className={ButtonArrow}>
+				<svg width="19" height="35" viewBox="0 0 19 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M18.3706 32.1378C18.5158 32.283 18.6309 32.4554 18.7095 32.645C18.7881 32.8347 18.8285 33.038 18.8285 33.2433C18.8285 33.4486 18.7881 33.6519 18.7095 33.8416C18.6309 34.0313 18.5158 34.2036 18.3706 34.3488C18.2254 34.494 18.0531 34.6091 17.8634 34.6877C17.6737 34.7662 17.4704 34.8067 17.2651 34.8067C17.0598 34.8067 16.8565 34.7662 16.6669 34.6877C16.4772 34.6091 16.3048 34.494 16.1597 34.3488L0.534676 18.7238C0.3894 18.5787 0.274153 18.4063 0.195521 18.2167C0.116889 18.027 0.076416 17.8237 0.076416 17.6183C0.076416 17.413 0.116889 17.2097 0.195521 17.02C0.274153 16.8303 0.3894 16.658 0.534676 16.5128L16.1597 0.887847C16.4529 0.594658 16.8505 0.429947 17.2651 0.429947C17.6798 0.429947 18.0774 0.594658 18.3706 0.887847C18.6638 1.18104 18.8285 1.57868 18.8285 1.99332C18.8285 2.40795 18.6638 2.8056 18.3706 3.09878L3.84913 17.6183L18.3706 32.1378Z" fill="white"/>
+				</svg>
+			</button>
 			<Logo/>
-			<div>
-			</div>
+			<form className={Form}>
+				<hr style={{width:'100%', color:'rgba(255,255,255,.1'}} />
+				<h1 style={{color:vars.colors.inputButton}}>Resultado</h1>
+
+				<div>{imc(userData.weight || 0, userData.height || 0)}</div>
+				<br />
+				<div className={Container}>
+					<label htmlFor="gastoCalorico">Seu gasto calórico é :</label>
+					<input className={InputTextGreen} value={metabolismoBasal(userData.activity, userData.weight, userData.height, userData.gender, userData.age).toFixed(0)+' Cal'} type="text" disabled/>
+				</div>
+
+				<h2>Para bater sua meta de : <span>{meta[userData.objective]}</span></h2>
+				<div className={Container}>
+					<input
+						className={InputTextGreen}
+						value={(metabolismoBasal(userData.activity, userData.weight, userData.height, userData.gender, userData.age) * multiplicador[userData.objective]).toFixed(0)+' Cal'}
+						type="text"
+						disabled/>
+				</div>
+
+				<div className={Container}>
+					<h3>Você precisa consumir :</h3>
+					<label htmlFor="gastoCalorico">Proteina</label>
+					<input className={InputTextGreen} value={`${macros.proteina}g`} type="text" disabled/>
+				</div>
+				<div className={Container}>
+					<label htmlFor="gastoCalorico">Carboidrato</label>
+					<input className={InputTextGreen} value={`${macros.carboidrato}g`} type="text" disabled/>
+				</div>
+				<div className={Container}>
+					<label htmlFor="gastoCalorico">Gordura</label>
+					<input className={InputTextGreen} value={`${macros.gordura}g`} type="text" disabled/>
+				</div>
+				<div className={Container}>
+					<input onClick={router.back} id='buttonForm' type="button" value="Voltar" className={inputButton} />
+				</div>
+			</form>
 		</>
 	)
 }

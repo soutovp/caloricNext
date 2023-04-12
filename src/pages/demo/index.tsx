@@ -4,9 +4,11 @@ import { UserActivityAcceptedValues } from '@entities/User/UserActivityAcceptedV
 import { TypeUserActivityAcceptedValues } from '@/entities/User/TypeUserActivityAcceptedValues'
 import { User } from '@/entities/User/User'
 import { Logo } from '@/components/Logo'
-export default function Home() {
+import { useRouter } from 'next/router'
+export default function Demo() {
 	const [user] = useState(new User())
 	const [atividadeDesc, atividadeDescChange] = useState('Pouco ou nenhum exercício')
+	const router = useRouter()
 
 	const handleChange = (value:{target:{name: string, value:any}})=>{
 		const _name= value.target.name
@@ -27,9 +29,11 @@ export default function Home() {
 		console.log(user)
 	}
 
-	const handleClick = ()=>{
+	const handleSubmit = ()=>{
 		console.log(user.weight)
 		localStorage.setItem('user', JSON.stringify(user))
+		// router.push('/resultado')
+		router.push('/resultado')
 	}
 
 	const firstElementRef = useRef<HTMLInputElement>(null)
@@ -60,16 +64,16 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Logo/>
-			<form className={Form} action="#" >
+			<form onSubmit={handleSubmit} className={Form} action="#" >
 
 				<div className={Container}>
 					<label className={Label} htmlFor="weight">Peso</label>
-					<input ref={firstElementRef} onKeyDown={handleKeyDown} min={0} max={150} id='weight' name='weight' type="number" className={Input} onChange={handleChange} tabIndex={1} autoFocus={true} />
+					<input ref={firstElementRef} onKeyDown={handleKeyDown} min={0} max={635} id='weight' name='weight' type="number" className={Input} onChange={handleChange} tabIndex={1} autoFocus={true} />
 				</div>
 
 				<div className={Container}>
 					<label className={Label} htmlFor="height">Altura</label>
-					<input onKeyDown={handleKeyDown} name='height' type="number" min={.8} max={3} className={Input} onChange={handleChange} tabIndex={2}/>
+					<input onKeyDown={handleKeyDown} name='height' type="number" step={.01} min={0.8} max={3} className={Input} onChange={handleChange} tabIndex={2}/>
 				</div>
 
 				<div className={Container}>
@@ -111,9 +115,9 @@ export default function Home() {
 				</div>
 
 				<div className={Container}>
-					<Link className={LinkStyle} href='/resultado' tabIndex={-1}>
-						<input ref={lastElementRef} onKeyDown={handleKeyDown} id='buttonForm' type="button" value="Calcular" className={inputButton} onClick={handleClick} tabIndex={8} />
-					</Link>
+					{/* @ts-ignore */}
+					<button type="submit" className={inputButton} tabIndex={8} onKeyDown={handleKeyDown} ref={lastElementRef}>Calcular</button>
+					{/* <input ref={lastElementRef} onKeyDown={handleKeyDown} id='buttonForm' type="button" value="Calcular" className={inputButton} onClick={handleClick} tabIndex={8} /> */}
 				</div>
 			</form>
 		</>
